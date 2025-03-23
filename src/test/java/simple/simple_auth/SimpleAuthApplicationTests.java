@@ -1,4 +1,4 @@
-package SimpleAuth.simple_auth;
+package simple.simple_auth;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
