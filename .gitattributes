@@ -1,2 +1,14 @@
-/mvnw text eol=lf
-*.cmd text eol=crlf
+/mvnw
+/mvnw.cmd
+
+/target/
+/.mvn/
+/.idea/
+/.vscode/
+/.settings/
+/.classpath
+/.project
+/.DS_Store
+
+
+src/main/resources/app.key
