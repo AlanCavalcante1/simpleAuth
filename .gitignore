@@ -1,33 +1,49 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+### Diretórios de build e dependências ###
+/target/
+/.mvn/
+/build/
+/.gradle/
+/bin/
+/project/target/
+/project/project/
+/project/*.iml
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+### IDEs ###
+/.idea/
+/.vscode/
+/.settings/
+/.classpath
+/.project
+/*.iml
+/*.ipr
+/*.iws
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+### Arquivos de sistema ###
+.DS_Store
+Thumbs.db
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+### Logs ###
+*.log
+logs/
 
-### VS Code ###
-.vscode/
+### Arquivos de configuração sensíveis ###
+*.key
+*.p12
+*.cer
+*.jks
+*.properties
+*.yml
+!application.yml  # Exceto este (se necessário)
+!bootstrap.yml    # Exceto este (se necessário)
+
+### Outros ###
+**/node_modules/
+**/.env
+**/.env.local
+**/heapdump.hprof
+**/*.orig
