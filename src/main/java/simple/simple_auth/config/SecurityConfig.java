@@ -32,10 +32,10 @@ import java.security.interfaces.RSAPublicKey;
 public class SecurityConfig {
 
     @Value("${jwt.public.key}")
-    private final RSAPublicKey publicKey;
+    private RSAPublicKey publicKey;
 
     @Value("${jwt.private.key}")
-    private final RSAPrivateKey privateKey;
+    private RSAPrivateKey privateKey;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
