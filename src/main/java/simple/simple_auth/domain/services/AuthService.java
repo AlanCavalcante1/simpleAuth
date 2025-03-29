@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import simple.simple_auth.domain.dtos.CreateUserDto;
+import simple.simple_auth.domain.dtos.CreateUserResponse;
 import simple.simple_auth.domain.entities.RoleEntity;
 import simple.simple_auth.domain.entities.UserEntity;
 import simple.simple_auth.domain.mapper.UserMapper;
@@ -18,21 +19,22 @@ import simple.simple_auth.excepction.DuplicateEmailException;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class AuthService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final TokenService tokenService;
     private final UserMapper userMapper;
 
     @Transactional
-    public Long newUser(CreateUserDto dto) {
+    public CreateUserResponse newUser(CreateUserDto dto) {
         try {
             log.info("Creating new user with email: {}", dto.email());
             checkDuplicateEmail(dto.email());
             var user = createUser(dto);
             userRepository.save(user);
             log.info("User created successfully with email: {}", dto.email());
-            return user.getId();
+            return tokenService.generateAccessToken(user);
         } catch (Exception e) {
             log.error("Error creating user with email: {}", dto.email(), e);
             throw e;

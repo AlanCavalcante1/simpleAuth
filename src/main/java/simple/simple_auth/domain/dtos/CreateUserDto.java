@@ -21,12 +21,12 @@ public record CreateUserDto(
     @NotBlank(message = "Password is required")
         @Size(min = 4, max = 100, message = "Password must be between 4 and 100 characters")
         String password,
-    @NotBlank(message = "PasswordConfirm is required")
-        @Size(min = 4, max = 100, message = "Password must be between 4 and 100 characters")
-        String confirmPassword) {
+    @NotBlank(message = "Password confirmation cannot be empty")
+    @Size(min = 4, max = 100, message = "Password confirmation must be between 8 and 100 characters long")
+    String passwordConfirmation) {
 
-  @AssertTrue(message = "Passwords must match")
-  private boolean isPasswordMatching() {
-    return nonNull(password) && password.equals(confirmPassword);
-  }
+    @AssertTrue(message = "Password and confirmation password must match")
+    private boolean isPasswordMatching() {
+        return nonNull(password) && password.equals(passwordConfirmation);
+    }
 }
