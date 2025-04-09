@@ -12,40 +12,46 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class UserEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, unique = true)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", nullable = false, unique = true)
+  private Long id;
 
-    @Column(name = "first_name", nullable = false)
-    @Size(min = 2, max = 50)
-    private String firstName;
+  @Column(name = "first_name", nullable = false)
+  @Size(min = 2, max = 50)
+  private String firstName;
 
-    @Column(name = "last_name", nullable = false)
-    @Size(min = 2, max = 50)
-    private String lastName;
+  @Column(name = "last_name", nullable = false)
+  @Size(min = 2, max = 50)
+  private String lastName;
 
-    @Column(name = "email", nullable = false, unique = true)
-    @Size(max = 100)
-    private String email;
+  @Column(name = "email", nullable = false, unique = true)
+  @Size(max = 100)
+  private String email;
 
-    @Column(name = "password", nullable = false)
-    @Size(min = 4, max = 100)
-    private String password;
+  @Column(name = "password", nullable = false)
+  @Size(min = 4, max = 100)
+  private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<RoleEntity> roles;
+  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @JoinTable(
+      name = "users_roles",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "role_id"))
+  private Set<RoleEntity> roles;
 }

@@ -16,27 +16,28 @@ import simple.simple_auth.domain.entities.UserEntity;
 @RequiredArgsConstructor
 public class TokenService {
 
-    private final SecurityConfig securityConfig;
+  private final SecurityConfig securityConfig;
 
-    public CreateUserResponse generateAccessToken(UserEntity user){
-        log.info("Generating token to: {}", user.getEmail());
-        var now = Instant.now();
+  public CreateUserResponse generateAccessToken(UserEntity user) {
+    log.info("Generating token to: {}", user.getEmail());
+    var now = Instant.now();
 
-        var scopes = user.getRoles()
-                .stream()
-                .map(role -> role.getName().getName())
-                .collect(Collectors.joining(" "));
+    var scopes =
+        user.getRoles().stream()
+            .map(role -> role.getName().getName())
+            .collect(Collectors.joining(" "));
 
-        var claims = JwtClaimsSet.builder()
-                .issuer("mybackend")
-                .issuedAt(now)
-                .expiresAt(now.plusSeconds(SecurityConfig.ACCESS_TOKEN_EXPIRATION))
-                .subject(user.getId().toString())
-                .claim("scope", scopes)
-                .build();
+    var claims =
+        JwtClaimsSet.builder()
+            .issuer("mybackend")
+            .issuedAt(now)
+            .expiresAt(now.plusSeconds(SecurityConfig.ACCESS_TOKEN_EXPIRATION))
+            .subject(user.getId().toString())
+            .claim("scope", scopes)
+            .build();
 
-        var jwt = securityConfig.jwtEncoder().encode(JwtEncoderParameters.from(claims)).getTokenValue();
+    var jwt = securityConfig.jwtEncoder().encode(JwtEncoderParameters.from(claims)).getTokenValue();
 
-        return new CreateUserResponse(jwt, SecurityConfig.ACCESS_TOKEN_EXPIRATION);
-    }
+    return new CreateUserResponse(jwt, SecurityConfig.ACCESS_TOKEN_EXPIRATION);
+  }
 }

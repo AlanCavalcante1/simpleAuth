@@ -8,5 +8,5 @@ import simple.simple_auth.domain.entities.RoleType;
 
 @Repository
 public interface RoleRepository extends JpaRepository<RoleEntity, Long> {
-    Optional<RoleEntity> getByName(RoleType roleTypeName);
+  Optional<RoleEntity> getByName(RoleType roleTypeName);
 }

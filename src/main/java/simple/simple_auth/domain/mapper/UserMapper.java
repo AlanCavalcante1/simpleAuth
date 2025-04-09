@@ -10,11 +10,11 @@ import simple.simple_auth.domain.entities.UserEntity;
 @Mapper(componentModel = "spring")
 public abstract class UserMapper {
 
-    @Mapping(target = "password", source = "password", qualifiedByName = "encodePassword")
-    public abstract UserEntity toEntity(CreateUserDto dto);
+  @Mapping(target = "password", source = "password", qualifiedByName = "encodePassword")
+  public abstract UserEntity toEntity(CreateUserDto dto);
 
-    @Named("encodePassword")
-    protected String encodePassword(String password) {
-        return SecurityConfig.passwordEncoder().encode(password);
-    }
+  @Named("encodePassword")
+  protected String encodePassword(String password) {
+    return SecurityConfig.passwordEncoder().encode(password);
+  }
 }

@@ -21,40 +21,43 @@ import simple.simple_auth.excepction.DuplicateEmailException;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final TokenService tokenService;
-    private final UserMapper userMapper;
+  private final UserRepository userRepository;
+  private final RoleRepository roleRepository;
+  private final TokenService tokenService;
+  private final UserMapper userMapper;
 
-    @Transactional
-    public CreateUserResponse newUser(CreateUserDto dto) {
-        try {
-            log.info("Creating new user with email: {}", dto.email());
-            checkDuplicateEmail(dto.email());
-            var user = createUser(dto);
-            userRepository.save(user);
-            log.info("User created successfully with email: {}", dto.email());
-            return tokenService.generateAccessToken(user);
-        } catch (Exception e) {
-            log.error("Error creating user with email: {}", dto.email(), e);
-            throw e;
-        }
+  @Transactional
+  public CreateUserResponse newUser(CreateUserDto dto) {
+    try {
+      log.info("Creating new user with email: {}", dto.email());
+      checkDuplicateEmail(dto.email());
+      var user = createUser(dto);
+      userRepository.save(user);
+      log.info("User created successfully with email: {}", dto.email());
+      return tokenService.generateAccessToken(user);
+    } catch (Exception e) {
+      log.error("Error creating user with email: {}", dto.email(), e);
+      throw e;
     }
+  }
 
-    private void checkDuplicateEmail(String email) {
-        userRepository.findByEmail(email).ifPresent(user -> {
-            log.warn("Duplicate email found: {}", email);
-            throw new DuplicateEmailException("User already exists");
-        });
-    }
+  private void checkDuplicateEmail(String email) {
+    userRepository
+        .findByEmail(email)
+        .ifPresent(
+            user -> {
+              log.warn("Duplicate email found: {}", email);
+              throw new DuplicateEmailException("User already exists");
+            });
+  }
 
-    private UserEntity createUser(CreateUserDto dto) {
-        var user = userMapper.toEntity(dto);
+  private UserEntity createUser(CreateUserDto dto) {
+    var user = userMapper.toEntity(dto);
     RoleEntity userRole =
         roleRepository
-                .getByName(ROLE_USER)
+            .getByName(ROLE_USER)
             .orElseThrow(() -> new IllegalStateException(ROLE_USER + " not found in database"));
-        user.setRoles(Set.of(userRole));
-        return user;
-    }
+    user.setRoles(Set.of(userRole));
+    return user;
+  }
 }

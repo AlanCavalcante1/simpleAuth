@@ -16,10 +16,10 @@ import simple.simple_auth.domain.services.AuthService;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private final AuthService authService;
-    
-    @PostMapping("/signup")
-    public ResponseEntity<CreateUserResponse> newUser(@Valid @RequestBody CreateUserDto dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(authService.newUser(dto));
-    }
+  private final AuthService authService;
+
+  @PostMapping("/signup")
+  public ResponseEntity<CreateUserResponse> newUser(@Valid @RequestBody CreateUserDto dto) {
+    return ResponseEntity.status(HttpStatus.CREATED).body(authService.newUser(dto));
+  }
 }
