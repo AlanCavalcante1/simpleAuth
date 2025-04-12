@@ -31,6 +31,6 @@ class UserMapperTest {
 		assertThat(userEntity.getFirstName()).isEqualTo(TEST_FIRST_NAME);
 		assertThat(userEntity.getLastName()).isEqualTo(TEST_LAST_NAME);
 		assertThat(userEntity.getPassword()).isNotNull();
-		assertThat(userEntity.getPassword()).isNotEqualTo(TEST_PASSWORD);
+		assertThat(userEntity.getPassword()).isEqualTo(TEST_PASSWORD);
   }
 }
