@@ -1,8 +1,6 @@
 package simple.simple_auth.domain.mapper;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,12 +25,12 @@ class UserMapperTest {
             TEST_EMAIL, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_PASSWORD, TEST_PASSWORD);
 
     var userEntity = userMapper.toEntity(dto);
-
-    assertNotNull(userEntity);
-    assertEquals(TEST_EMAIL, userEntity.getEmail());
-		assertEquals(TEST_FIRST_NAME, userEntity.getFirstName());
-		assertEquals(TEST_LAST_NAME, userEntity.getLastName());
-		assertNotNull(userEntity.getPassword());
-		assertNotEquals(TEST_PASSWORD, userEntity.getPassword());
+		
+		assertThat(userEntity).isNotNull();
+		assertThat(userEntity.getEmail()).isEqualTo(TEST_EMAIL);
+		assertThat(userEntity.getFirstName()).isEqualTo(TEST_FIRST_NAME);
+		assertThat(userEntity.getLastName()).isEqualTo(TEST_LAST_NAME);
+		assertThat(userEntity.getPassword()).isNotNull();
+		assertThat(userEntity.getPassword()).isNotEqualTo(TEST_PASSWORD);
   }
 }

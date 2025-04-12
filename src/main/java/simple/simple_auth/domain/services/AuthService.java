@@ -15,6 +15,7 @@ import simple.simple_auth.domain.mapper.UserMapper;
 import simple.simple_auth.domain.repositories.RoleRepository;
 import simple.simple_auth.domain.repositories.UserRepository;
 import simple.simple_auth.excepction.DuplicateEmailException;
+import simple.simple_auth.excepction.ErrorMessages;
 
 @Slf4j
 @Service
@@ -47,7 +48,7 @@ public class AuthService {
         .ifPresent(
             user -> {
               log.warn("Duplicate email found: {}", email);
-              throw new DuplicateEmailException("User already exists");
+              throw new DuplicateEmailException(ErrorMessages.USER_ALREADY_EXISTS);
             });
   }
 
@@ -56,7 +57,7 @@ public class AuthService {
     RoleEntity userRole =
         roleRepository
             .getByName(ROLE_USER)
-            .orElseThrow(() -> new IllegalStateException(ROLE_USER + " not found in database"));
+            .orElseThrow(() -> new IllegalStateException(ErrorMessages.ROLE_USER_NOT_FOUND));
     user.setRoles(Set.of(userRole));
     return user;
   }

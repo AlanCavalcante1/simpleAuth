@@ -1,5 +1,9 @@
 package simple.simple_auth.domain.repositories;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static simple.simple_auth.domain.entities.RoleType.ROLE_USER;
+
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,13 +11,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import simple.simple_auth.domain.entities.RoleEntity;
 import simple.simple_auth.domain.entities.UserEntity;
-
-import java.util.Optional;
-import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static simple.simple_auth.domain.entities.RoleType.ROLE_USER;
 
 @DataJpaTest
 class UserRepositoryTest {
@@ -61,6 +58,6 @@ class UserRepositoryTest {
     entityManager.persist(user);
 
     var findUser = userRepository.findByEmail("another_email@gmail.com");
-    assertEquals(findUser, Optional.empty());
+    assertThat(findUser).isEmpty();
   }
 }

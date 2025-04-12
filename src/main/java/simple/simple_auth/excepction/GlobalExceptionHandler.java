@@ -1,5 +1,7 @@
 package simple.simple_auth.excepction;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -11,9 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
@@ -24,9 +23,9 @@ public class GlobalExceptionHandler {
         logger.warn("BadCredentialsException: {}", ex.getMessage());
 
         Map<String, String> details = new HashMap<>();
-        details.put("email", "Invalid email or password");
-        details.put("password", "Invalid email or password");
-        return buildErrorResponse(HttpStatus.UNAUTHORIZED, "Invalid credentials", details);
+        details.put("email", ErrorMessages.EMAIL_OR_PASSWORD_INCORRECT);
+        details.put("password", ErrorMessages.EMAIL_OR_PASSWORD_INCORRECT);
+        return buildErrorResponse(HttpStatus.UNAUTHORIZED, ErrorMessages.INVALID_CREDENTIALS, details);
     }
 
     @ExceptionHandler(Exception.class)
@@ -35,8 +34,8 @@ public class GlobalExceptionHandler {
         logger.error("Internal Server Error: {} - {}", ex.getClass().getSimpleName(), ex.getMessage(), ex);
 
         Map<String, String> details = new HashMap<>();
-        details.put("error", "An unexpected error occurred");
-        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", details);
+        details.put("error", ErrorMessages.UNEXPECTED_ERROR_OCURRED);
+        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ErrorMessages.INTERNAL_SERVER_ERROR, details);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -54,7 +53,7 @@ public class GlobalExceptionHandler {
                 details.put("error", error.getDefaultMessage());
             }
         });
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Validation failed", details);
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, ErrorMessages.VALIDATION_FAILED, details);
     }
 
     @ExceptionHandler(DuplicateEmailException.class)
@@ -64,7 +63,7 @@ public class GlobalExceptionHandler {
 
         Map<String, String> details = new HashMap<>();
         details.put("email", ex.getMessage());
-        return buildErrorResponse(HttpStatus.CONFLICT, "Email already in use", details);
+        return buildErrorResponse(HttpStatus.CONFLICT, ErrorMessages.EMAIL_ALREADY_IN_USE, details);
     }
 
     private ResponseEntity<ErrorResponse> buildErrorResponse(HttpStatus status, String message, Map<String, String> details) {

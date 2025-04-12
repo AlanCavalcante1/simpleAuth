@@ -1,7 +1,6 @@
 package simple.simple_auth.domain.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -23,6 +22,7 @@ import simple.simple_auth.domain.mapper.UserMapper;
 import simple.simple_auth.domain.repositories.RoleRepository;
 import simple.simple_auth.domain.repositories.UserRepository;
 import simple.simple_auth.excepction.DuplicateEmailException;
+import simple.simple_auth.excepction.ErrorMessages;
 
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
@@ -71,9 +71,10 @@ class AuthServiceTest {
 
     var response = authService.newUser(dto);
 
-    assertNotNull(response);
-    assertEquals(accessToken().accessToken(), response.accessToken());
-    assertEquals(accessToken().expiresIn(), response.expiresIn());
+
+    assertThat(response).isNotNull();
+    assertThat(response.accessToken()).isEqualTo(accessToken().accessToken());
+    assertThat(response.expiresIn()).isEqualTo(accessToken().expiresIn());
   }
 
   @Test
@@ -82,7 +83,7 @@ class AuthServiceTest {
 
     var exception = assertThrows(DuplicateEmailException.class, () -> authService.newUser(dto));
 
-    assertEquals("User already exists", exception.getMessage());
+    assertThat(exception.getMessage()).isEqualTo(ErrorMessages.USER_ALREADY_EXISTS);
   }
 
   @Test
@@ -93,7 +94,7 @@ class AuthServiceTest {
 
     var exception = assertThrows(IllegalStateException.class, () -> authService.newUser(dto));
 
-    assertEquals("ROLE_USER not found in database", exception.getMessage());
+    assertThat(exception.getMessage()).isEqualTo(ErrorMessages.ROLE_USER_NOT_FOUND);
   }
 
   private CreateUserResponse accessToken() {

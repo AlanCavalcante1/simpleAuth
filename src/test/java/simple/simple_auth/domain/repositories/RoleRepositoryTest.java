@@ -1,11 +1,9 @@
 package simple.simple_auth.domain.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static simple.simple_auth.domain.entities.RoleType.ROLE_ADMIN;
 import static simple.simple_auth.domain.entities.RoleType.ROLE_USER;
 
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import simple.simple_auth.domain.entities.RoleEntity;
 class RoleRepositoryTest {
 
   @Autowired RoleRepository roleRepository;
-
   @Autowired TestEntityManager entityManager;
 
   private RoleEntity role;
@@ -46,6 +43,6 @@ class RoleRepositoryTest {
     entityManager.persist(role);
 
     var findRole = roleRepository.getByName(ROLE_ADMIN);
-    assertEquals(findRole, Optional.empty());
+    assertThat(findRole).isEmpty();
   }
 }

@@ -1,7 +1,6 @@
 package simple.simple_auth.domain.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static simple.simple_auth.domain.entities.RoleType.ROLE_USER;
@@ -62,8 +61,8 @@ class TokenServiceTest {
 
     var response = tokenService.generateAccessToken(userEntity);
 
-    assertNotNull(response);
-    assertEquals(expectedToken, response.accessToken());
-    assertEquals(SecurityConfig.ACCESS_TOKEN_EXPIRATION, response.expiresIn());
+    assertThat(response).isNotNull();
+    assertThat(response.accessToken()).isEqualTo(expectedToken);
+    assertThat(response.expiresIn()).isEqualTo(SecurityConfig.ACCESS_TOKEN_EXPIRATION);
   }
 }
