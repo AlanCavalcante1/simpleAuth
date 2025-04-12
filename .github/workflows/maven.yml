@@ -3,10 +3,13 @@ name: Java CI
 on:
   push:
     branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v4
@@ -16,14 +19,25 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+          cache: 'maven'
 
-      - name: Build, test and install
-        run: mvn -B install
+      - name: Build and test
+        run: mvn -B verify
 
-      - name: Upload test results
-        if: always()
+      - name: Upload successful test reports
+        if: success()  # Only when tests pass
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: passed-tests
           path: target/surefire-reports
+          retention-days: 7
+
+      - name: Upload failed test reports
+        if: failure()  # Only when tests fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: failed-tests
+          path: |
+            target/surefire-reports
+            target/failsafe-reports
           retention-days: 7
