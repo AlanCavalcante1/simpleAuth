@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import simple.simple_auth.domain.entities.RoleType;
@@ -16,6 +17,7 @@ import simple.simple_auth.domain.repositories.UserRepository;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
+@Profile("!test")
 public class AdminUserConfig implements CommandLineRunner {
   private final RoleRepository roleRepository;
   private final UserRepository userRepository;
