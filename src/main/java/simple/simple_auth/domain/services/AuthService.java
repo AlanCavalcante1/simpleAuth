@@ -5,10 +5,14 @@ import static simple.simple_auth.domain.entities.RoleType.ROLE_USER;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import simple.simple_auth.domain.dtos.CreateUserDto;
-import simple.simple_auth.domain.dtos.CreateUserResponse;
+import simple.simple_auth.config.SecurityConfig;
+import simple.simple_auth.domain.dtos.request.CreateUserDto;
+import simple.simple_auth.domain.dtos.request.LoginRequest;
+import simple.simple_auth.domain.dtos.response.CreateUserResponse;
+import simple.simple_auth.domain.dtos.response.LoginResponse;
 import simple.simple_auth.domain.entities.RoleEntity;
 import simple.simple_auth.domain.entities.UserEntity;
 import simple.simple_auth.domain.mapper.UserMapper;
@@ -35,11 +39,27 @@ public class AuthService {
       var user = createUser(dto);
       userRepository.save(user);
       log.info("User created successfully with email: {}", dto.email());
-      return tokenService.generateAccessToken(user);
+      var accessToken = tokenService.generateAccessToken(user);
+      return new CreateUserResponse(accessToken, SecurityConfig.ACCESS_TOKEN_EXPIRATION);
     } catch (Exception e) {
       log.error("Error creating user with email: {}", dto.email(), e);
       throw e;
     }
+  }
+
+  public LoginResponse login(LoginRequest loginRequest) {
+    var user = userRepository.findByEmail(loginRequest.email());
+
+    if (user.isEmpty() || isLoginNotCorrect(loginRequest, user.get())) {
+      throw new BadCredentialsException("Invalid email or password");
+    }
+
+    var jwtValue = tokenService.generateAccessToken(user.get());
+    return new LoginResponse(jwtValue, SecurityConfig.ACCESS_TOKEN_EXPIRATION);
+  }
+
+  private boolean isLoginNotCorrect(LoginRequest loginRequest, UserEntity user) {
+    return !SecurityConfig.passwordEncoder().matches(loginRequest.password(), user.getPassword());
   }
 
   private void checkDuplicateEmail(String email) {

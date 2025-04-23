@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import simple.simple_auth.config.SecurityConfig;
-import simple.simple_auth.domain.dtos.CreateUserDto;
+import simple.simple_auth.domain.dtos.request.CreateUserDto;
 import simple.simple_auth.excepction.ErrorMessages;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

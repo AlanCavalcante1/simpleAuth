@@ -50,6 +50,7 @@ class TokenServiceTest {
   @Test
   void generateAccessToken_shouldReturnToken_whenValidInfoProvided() {
     String expectedToken = "mocked.jwt.token";
+
     when(jwtEncoder.encode(any()))
         .thenReturn(
             new Jwt(
@@ -61,8 +62,6 @@ class TokenServiceTest {
 
     var response = tokenService.generateAccessToken(userEntity);
 
-    assertThat(response).isNotNull();
-    assertThat(response.accessToken()).isEqualTo(expectedToken);
-    assertThat(response.expiresIn()).isEqualTo(SecurityConfig.ACCESS_TOKEN_EXPIRATION);
+    assertThat(response).isNotNull().isEqualTo(expectedToken);
   }
 }

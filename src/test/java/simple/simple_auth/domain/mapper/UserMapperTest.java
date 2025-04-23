@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import simple.simple_auth.domain.dtos.CreateUserDto;
+import simple.simple_auth.domain.dtos.request.CreateUserDto;
 
 @ExtendWith(MockitoExtension.class)
 class UserMapperTest {

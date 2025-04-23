@@ -1,4 +1,4 @@
-package simple.simple_auth.domain.dtos;
+package simple.simple_auth.domain.dtos.request;
 
 import static java.util.Objects.nonNull;
 

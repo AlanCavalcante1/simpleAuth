@@ -14,8 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import simple.simple_auth.domain.dtos.CreateUserDto;
-import simple.simple_auth.domain.dtos.CreateUserResponse;
+import simple.simple_auth.config.SecurityConfig;
+import simple.simple_auth.domain.dtos.request.CreateUserDto;
 import simple.simple_auth.domain.entities.RoleEntity;
 import simple.simple_auth.domain.entities.UserEntity;
 import simple.simple_auth.domain.mapper.UserMapper;
@@ -73,8 +73,8 @@ class AuthServiceTest {
 
 
     assertThat(response).isNotNull();
-    assertThat(response.accessToken()).isEqualTo(accessToken().accessToken());
-    assertThat(response.expiresIn()).isEqualTo(accessToken().expiresIn());
+    assertThat(response.accessToken()).isEqualTo(accessToken());
+    assertThat(response.expiresIn()).isEqualTo(SecurityConfig.ACCESS_TOKEN_EXPIRATION);
   }
 
   @Test
@@ -97,10 +97,9 @@ class AuthServiceTest {
     assertThat(exception.getMessage()).isEqualTo(ErrorMessages.ROLE_USER_NOT_FOUND);
   }
 
-  private CreateUserResponse accessToken() {
-    var jwt =
+  private String accessToken() {
+    return 
         "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJteWJhY2tlbmQiLCJzdWIiOiI3IiwiZXhwIjoxNzQzMjY1MDk5LCJpYXQiOjE3NDMyNjQxOTksInNjb3BlIjoiUk9MRV9VU0VSIn0.h-2lZJYOu7gNCwyHCmFrbveYkpXOV_0nT0Na0OTo7ctVVIg6oKqAGAAhBAOl0v1IYFfH5K56iEdfOj9SBRPHwuPPsYwKYgtHDSjFRtltEwwCvy5CNXY9_OgdEW0q34RfX4jFQgAmLnHgGwsB7AAvckVyri6r4I94KLsvYIe0dfm9AMtAjRoneuI1_M7s0PIxrFahzKKcogiVaqDGu8fr29V0-1eKUWv9o8suTe0-OTb1YpQ_6rSIqAptAb2zi8os8cHT7ReXsOuH0UdxclsDzzd3vU8xDx9CjZJx7A9V3-wiO-BUkT1yIdqyQjRoygtXJp-ehM4GRyD13Dl1YqgpnA";
-    return new CreateUserResponse(jwt, 900);
   }
 
   private Optional<UserEntity> emailAlreadyExists() {

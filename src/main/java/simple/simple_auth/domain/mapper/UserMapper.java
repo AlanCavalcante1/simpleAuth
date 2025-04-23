@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 import org.mapstruct.Mapping;
 import simple.simple_auth.config.SecurityConfig;
-import simple.simple_auth.domain.dtos.CreateUserDto;
+import simple.simple_auth.domain.dtos.request.CreateUserDto;
 import simple.simple_auth.domain.entities.UserEntity;
 
 @Mapper(componentModel = "spring")

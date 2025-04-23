@@ -8,17 +8,16 @@ import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 import simple.simple_auth.config.SecurityConfig;
-import simple.simple_auth.domain.dtos.CreateUserResponse;
 import simple.simple_auth.domain.entities.UserEntity;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class TokenService {
-
+  
   private final SecurityConfig securityConfig;
 
-  public CreateUserResponse generateAccessToken(UserEntity user) {
+  public String generateAccessToken(UserEntity user) {
     log.info("Generating token to: {}", user.getEmail());
     var now = Instant.now();
 
@@ -36,8 +35,6 @@ public class TokenService {
             .claim("scope", scopes)
             .build();
 
-    var jwt = securityConfig.jwtEncoder().encode(JwtEncoderParameters.from(claims)).getTokenValue();
-
-    return new CreateUserResponse(jwt, SecurityConfig.ACCESS_TOKEN_EXPIRATION);
+    return securityConfig.jwtEncoder().encode(JwtEncoderParameters.from(claims)).getTokenValue();
   }
 }
