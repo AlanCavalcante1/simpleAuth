@@ -1,0 +1,31 @@
+services:
+  my-sql:
+    image: mysql:latest
+    container_name: ${DB_HOST}
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  backend:
+    build: .
+    container_name: backend
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_URL: ${DB_URL}
+      ADM_EMAIL: ${ADM_EMAIL}
+      ADM_PASSWORD: ${ADM_PASSWORD}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - my-sql
+
+volumes:
+  db_data:
